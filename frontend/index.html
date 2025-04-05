@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> CRUD API TEST </title>
+  <script type="text/javascript">
+    const APIUrl = "http://localhost:3000/";
+
+    async function callGET() {
+      const contentDiv = document.getElementById("get_results");
+      let apiRES = null;
+      try {
+        const response = await fetch(APIUrl, { method: "GET" } );
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        console.log(json);
+        apiRES = JSON.stringify(json);
+      } catch (error) {
+        apiRES = error.message;
+        console.error(error.message);
+      }
+      contentDiv.innerHTML = apiRES;
+    }
+
+    async function callPOST() {
+      const contentResults = document.getElementById("post_results");
+      const contentBody = document.getElementById("post_body").value;
+      let apiRES = null;
+      try {
+        const response = await fetch(APIUrl, { method: "POST",   headers: { "Content-Type": "application/json" }, body: contentBody } );
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        console.log(json);
+        apiRES = JSON.stringify(json);
+      } catch (error) {
+        apiRES = error.message;
+        console.error(error.message);
+      }
+      contentResults.innerHTML = apiRES;
+    }
+
+    async function callPUT() {
+      const contentResults = document.getElementById("put_results");
+      const contentBody = document.getElementById("put_body").value;
+      const contentID = Number(document.getElementById("put_id").value);
+      let apiRES = null;
+      try {
+        const response = await fetch(`${APIUrl}${contentID}`, { method: "PUT",   headers: { "Content-Type": "application/json" }, body: contentBody } );
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        console.log(json);
+        apiRES = JSON.stringify(json);
+      } catch (error) {
+        apiRES = error.message;
+        console.error(error.message);
+      }
+      contentResults.innerHTML = apiRES;
+    }
+
+    async function callDELETE() {
+      const contentResults = document.getElementById("delete_results");
+      const contentID = Number(document.getElementById("delete_id").value);
+      let apiRES = null;
+      try {
+        const response = await fetch(`${APIUrl}${contentID}`, { method: "DELETE" } );
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        console.log(json);
+        apiRES = JSON.stringify(json);
+      } catch (error) {
+        apiRES = error.message;
+        console.error(error.message);
+      }
+      contentResults.innerHTML = apiRES;
+    }
+
+  </script>
+  </head>
+  <body>
+    <h1> My very complex CRUD API </h1>
+    <h2> GET </h2>
+    <a href="#" onClick="callGET()">Call API get</a><br />
+    <div id="get_results"> API response... </div>
+    <h2> POST </h2>
+    <a href="#" onClick="callPOST()">Call API post</a><br />
+    <input type="text" id="post_body" /><br />
+    <div id="post_results"> API response... </div>
+    <a href="#" onClick="callPUT()">Call API put</a><br />
+    <input type="number" id="put_id" /><br />
+    <input type="text" id="put_body" /><br />
+    <div id="put_results"> API response... </div>
+    <a href="#" onClick="callDELETE()">Call API delete</a><br />
+    <input type="number" id="delete_id" /><br />
+    <div id="delete_results"> API response... </div>
+  </body>
+</html>
